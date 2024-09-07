@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>Cricket Game</title>
+  <style>
+    body{
+      text-align: center;
+    }
+    #resetBtn{
+      width: 360px;
+      height: 50px;
+      background-color: aqua;
+    }
+    button{
+      margin: 10px;
+      border: none;
+      background-color: rgba(240, 147, 147, 0.363);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  
+<h1>Bat Ball Stump Game</h1>
+
+
+<button onclick="
+
+let compchse= generateCompchase();
+let resultmsg = getResullt('Bat', compchse);
+finalResult('Bat',compchse,resultmsg)" 
+>
+<img src="images/bat.webp" width="100px" height="100px" alt="Bat Image" class="choice-image">
+</button>
+
+<button onclick="
+compchse =generateCompchase();
+resultmsg = getResullt('Ball', compchse);
+finalResult('Ball',compchse,resultmsg)"
+><img src="images/cricket-ball.webp" width="100px" height="100px" alt="ball image" class="choice-image"></button>
+
+<button onclick="
+compchse =generateCompchase();
+resultmsg = getResullt('Stump', compchse);
+finalResult('Stump',compchse,resultmsg)" 
+><img src="images/cricket-stump.jpg" width="100px" height="100px" alt="stump image" class="choice-image"></button>
+
+
+
+<h3 id="user-move"></h3>
+<h3 id="computer-move"></h3>
+<h3 id="result"></h3>
+<h3 id="score"></h3>
+<button onclick="localStorage.clear()
+resetscore() 
+" id="resetBtn">Reset</button>
+
+<script>
+let scorestr = localStorage.getItem('score');
+let score;
+resetscore(scorestr);
+function resetscore(scorestr){
+  score = scorestr ? JSON.parse(scorestr) : {  win : 0 ,
+  loss : 0 , 
+  tie : 0 
+}
+  score.displayscore = function(){
+   return  `The match score is : user- ${score.win} computer- ${score.loss} tie- ${score.tie}`
+  }
+  finalResult();
+}
+
+
+
+
+// if (scorestr !== null){
+//   score = JSON.parse(scorestr);
+// }
+//  else {
+//   score = {
+//   win : 0 ,
+//   loss : 0 , 
+//   tie : 0 ,
+
+//  }
+// }
+
+// let score = {
+//   win : 0 ,
+//   loss : 0 , 
+//   tie : 0 ,
+//   scoring : function(){
+//    return  `The match score is user- ${score.win} computer- ${score.loss} tie-${score.tie}`
+//   }
+// }
+
+function generateCompchase(){
+  let randomnmbr = Math.random()*3;
+
+if(randomnmbr>0 && randomnmbr<=1){
+   return'Bat';
+}
+else if(randomnmbr<=2){
+return 'Ball' ;
+}
+else{
+  return 'Stump'
+ }
+ return compchse;
+}
+
+function getResullt(usermove, computermove){
+  if (usermove === 'Bat'){
+    if ( computermove === 'Ball'){
+      score.win++
+ return 'you won' 
+
+}
+else if(computermove === 'Bat'){
+  score.tie++
+  return  `it's a tie`
+}
+else{
+  score.loss++
+  return  `computer Won`
+}
+}
+
+else if(usermove === 'Ball'){
+  if ( computermove === 'Ball'){
+ score.tie++
+ return `It's a Tie` 
+}
+else if(computermove === 'Bat'){
+  score.loss++
+    return `Computer  won `
+}
+else{
+  score.win++
+    return  `You won`
+}
+}
+else{
+
+if ( computermove === 'Ball'){
+ score.loss++
+ return `computer won` 
+
+}
+else if(computermove === 'Bat'){
+  score.win++
+    return `you won `
+}
+else{
+  score.tie++
+    return `it's tie`
+}
+}}
+
+function finalResult(usermove,computermove,resultmsg){
+  localStorage.setItem('score', JSON.stringify(score));
+  document.querySelector('#user-move').innerText =
+  usermove ? `you have chosen ${usermove}  ` :``;
+  document.querySelector('#computer-move').innerText = computermove  ? ` computer choice is ${ computermove}` : '';
+  document.querySelector('#result').innerText = resultmsg ?  resultmsg : '';
+  document.querySelector('#score').innerText = score.displayscore();
+
+  
+}
+
+</script>
+
+</body>
+</html>
